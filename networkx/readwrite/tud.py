@@ -44,20 +44,20 @@ def write_tud(graphs, path, name="DS", encoding="utf-8"):
     edge_attributes_file = f"{path}/{name}_edge_attributes.txt"
     graph_attributes_file = f"{path}/{name}_graph_attributes.txt"
 
-    new_graphs = []
+    num_graphs_seen = 0
     num_nodes_seen = 0
-
     with open(adjacency_matrix_file, 'w', encoding=encoding) as amf, open(graph_indicator_file, 'w',
                                                                           encoding=encoding) as gif:
         for i, og in enumerate(graphs):
             assert not og.is_directed()
             g = og.copy()
             g = nx.convert_node_labels_to_integers(g, first_label=num_nodes_seen)
-            new_graphs.append(g)
             for j in range(num_nodes_seen, num_nodes_seen + g.number_of_nodes()):
                 gif.write(f"{i}\n")
             num_nodes_seen += g.number_of_nodes()
 
-            for u, v in g.edges():
+            for u, v, d in g.edges(data=True):
                 amf.write(f"{u} {v}\n")
                 amf.write(f"{v} {u}\n")
+
+            num_graphs_seen += 1
