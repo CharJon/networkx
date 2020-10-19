@@ -30,9 +30,19 @@ def write_tud(graphs, path, name="DS", encoding="utf-8"):
         encoding : string, optional
            Text encoding.
     """
-
+    # merged graphs
     adjacency_matrix_file = f"{path}/{name}_A.txt"
     graph_indicator_file = f"{path}/{name}_graph_indicator.txt"
+
+    # labels
+    node_labels_file = f"{path}/{name}_node_labels.txt"
+    edge_labels_file = f"{path}/{name}_edge_labels.txt"
+    graph_labels_file = f"{path}/{name}_graph_labels.txt"
+
+    # attributes
+    node_attributes_file = f"{path}/{name}_node_attributes.txt"
+    edge_attributes_file = f"{path}/{name}_edge_attributes.txt"
+    graph_attributes_file = f"{path}/{name}_graph_attributes.txt"
 
     new_graphs = []
     num_nodes_seen = 0
