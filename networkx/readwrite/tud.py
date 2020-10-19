@@ -34,32 +34,41 @@ def write_tud(graphs, path, name="DS", encoding="utf-8"):
     adjacency_matrix_file = f"{path}/{name}_A.txt"
     graph_indicator_file = f"{path}/{name}_graph_indicator.txt"
 
-    # labels
+    # labels#
+    graph_labels_file = f"{path}/{name}_graph_labels.txt"
     node_labels_file = f"{path}/{name}_node_labels.txt"
     edge_labels_file = f"{path}/{name}_edge_labels.txt"
-    graph_labels_file = f"{path}/{name}_graph_labels.txt"
 
     # attributes
+    graph_attributes_file = f"{path}/{name}_graph_attributes.txt"
     node_attributes_file = f"{path}/{name}_node_attributes.txt"
     edge_attributes_file = f"{path}/{name}_edge_attributes.txt"
-    graph_attributes_file = f"{path}/{name}_graph_attributes.txt"
 
     num_graphs_seen = 0
     num_nodes_seen = 0
     num_edges_seen = 0
-    with open(adjacency_matrix_file, 'w', encoding=encoding) as amf, open(graph_indicator_file, 'w',
-                                                                          encoding=encoding) as gif:
+    with open(adjacency_matrix_file, 'w', encoding=encoding) as amf, \
+            open(graph_indicator_file, 'w', encoding=encoding) as gif, \
+            open(graph_attributes_file, 'w', encoding=encoding) as gaf, \
+            open(node_attributes_file, 'w', encoding=encoding) as naf, \
+            open(edge_attributes_file, 'w', encoding=encoding) as eaf:
+
         for i, og in enumerate(graphs):
             assert not og.is_directed()
             g = og.copy()
+            # graph
             g = nx.convert_node_labels_to_integers(g, first_label=num_nodes_seen)
+            num_graphs_seen += 1
+
+            # nodes
             for j in range(num_nodes_seen, num_nodes_seen + g.number_of_nodes()):
                 gif.write(f"{i}\n")
+                naf.write(", ".join(str(v) for v in g.nodes[j].values()) + '\n')
+
             num_nodes_seen += g.number_of_nodes()
 
+            # edges
             for u, v, d in g.edges(data=True):
                 amf.write(f"{u} {v}\n")
                 amf.write(f"{v} {u}\n")
                 num_edges_seen += 1
-
-            num_graphs_seen += 1
