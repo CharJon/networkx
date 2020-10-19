@@ -46,6 +46,7 @@ def write_tud(graphs, path, name="DS", encoding="utf-8"):
 
     num_graphs_seen = 0
     num_nodes_seen = 0
+    num_edges_seen = 0
     with open(adjacency_matrix_file, 'w', encoding=encoding) as amf, open(graph_indicator_file, 'w',
                                                                           encoding=encoding) as gif:
         for i, og in enumerate(graphs):
@@ -59,5 +60,6 @@ def write_tud(graphs, path, name="DS", encoding="utf-8"):
             for u, v, d in g.edges(data=True):
                 amf.write(f"{u} {v}\n")
                 amf.write(f"{v} {u}\n")
+                num_edges_seen += 1
 
             num_graphs_seen += 1
